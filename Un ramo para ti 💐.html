@@ -16,21 +16,64 @@ html{scroll-padding-top:env(safe-area-inset-top,0px)}
 body{margin:0;background:var(--bg);color:var(--ink);font-family:"Playfair Display",Georgia,serif;overflow-x:hidden;text-align:center}
 h1,h2,.script{font-family:Pacifico,"Brush Script MT",cursive;font-weight:400;color:var(--rose)}
 /* PORTADA */
-#cover{position:fixed;inset:0;z-index:50;display:flex;align-items:center;justify-content:center;pointer-events:auto}
-#cover .half{position:absolute;top:0;bottom:0;width:50.5%;background:radial-gradient(circle at 30% 20%,#ff9fc0,#e9457a 70%);transition:transform 1.6s cubic-bezier(.77,0,.18,1)}
-#cover .l{left:0}#cover .r{right:0;background:radial-gradient(circle at 70% 20%,#ff9fc0,#d63a6f 70%)}
+#cover{position:fixed;inset:0;z-index:50;display:flex;align-items:center;justify-content:center;pointer-events:auto;overflow:hidden}
+#cover .half{position:absolute;top:0;bottom:0;width:50.5%;transition:transform 1.6s cubic-bezier(.77,0,.18,1)}
+#cover .l{left:0;background:linear-gradient(160deg,#ffb3c8,#e9457a 55%,#b5133f)}
+#cover .r{right:0;background:linear-gradient(200deg,#ffb3c8,#e9457a 55%,#b5133f)}
+#cover::before{content:"";position:absolute;inset:0;z-index:1;pointer-events:none;
+background:radial-gradient(circle at 50% 42%,transparent 0 34%,rgba(255,255,255,.10) 55%,transparent 75%),
+radial-gradient(ellipse at 50% -10%,rgba(255,255,255,.35),transparent 55%),
+radial-gradient(ellipse at 50% 115%,rgba(74,20,45,.35),transparent 60%)}
+#cover::after{content:"";position:absolute;left:-60%;top:-20%;width:55%;height:140%;z-index:1;pointer-events:none;
+background:linear-gradient(100deg,transparent 30%,rgba(255,255,255,.28) 50%,transparent 70%);
+transform:translateX(-120%) rotate(8deg);animation:sweep 5.5s ease-in-out 1.2s infinite}
+@keyframes sweep{0%{transform:translateX(-120%) rotate(8deg)}55%,100%{transform:translateX(360%) rotate(8deg)}}
+#cover .deco{position:absolute;inset:0;z-index:1;pointer-events:none;overflow:hidden}
+#cover .deco span{position:absolute;display:block;filter:drop-shadow(0 6px 10px rgba(0,0,0,.22));opacity:0;animation:driftUp linear infinite}
+@keyframes driftUp{0%{transform:translateY(24px) rotate(-8deg);opacity:0}12%{opacity:.95}88%{opacity:.95}100%{transform:translateY(-70px) rotate(10deg);opacity:0}}
+#cover .halves-orn{position:absolute;inset:0;z-index:1;pointer-events:none}
+#cover .halves-orn i{position:absolute;width:14vmin;height:14vmin;border-radius:50%;border:2px dashed rgba(255,255,255,.35);animation:spinSlow 24s linear infinite}
+#cover .halves-orn i:nth-child(odd){border-style:dotted;animation-direction:reverse}
+@keyframes spinSlow{to{transform:rotate(360deg)}}
 #cover.open .l{transform:translateX(-102%)}#cover.open .r{transform:translateX(102%)}
-#seal{position:relative;z-index:2;border:0;cursor:pointer;width:min(260px,70vw);aspect-ratio:1;border-radius:50%;background:#fff;color:var(--rose);font:inherit;box-shadow:0 0 0 10px #ffffff66,0 20px 50px #0004;animation:pulse 2s infinite;transition:opacity .5s,transform .8s}
-#seal .script{font-size:1.9rem;display:block;line-height:1.1}#seal small{display:block;margin-top:8px;color:#8a4a62;font-size:.95rem}
-#seal b{font-size:3rem;display:block}
-#cover.open #seal{opacity:0;transform:scale(2.4)}
-@keyframes pulse{50%{transform:scale(1.06)}}
+#cover.open .deco,#cover.open::before,#cover.open::after{opacity:0;transition:opacity .6s}
+.seal-wrap{position:relative;z-index:2;width:min(320px,78vw);aspect-ratio:1;animation:floatIn 1.1s cubic-bezier(.2,.9,.3,1.2) both}
+@keyframes floatIn{from{opacity:0;transform:translateY(26px) scale(.85)}to{opacity:1;transform:none}}
+.ring{position:absolute;inset:-16px;border-radius:50%;pointer-events:none;
+background:conic-gradient(from 0deg,#ffd166,#ff7aa6,#fff0f5,#ffd166);
+-webkit-mask:radial-gradient(circle,transparent 61%,#000 62%);mask:radial-gradient(circle,transparent 61%,#000 62%);
+animation:spinSlow 9s linear infinite;filter:drop-shadow(0 0 10px rgba(255,209,102,.55))}
+.halo{position:absolute;inset:-46px;border-radius:50%;pointer-events:none;background:radial-gradient(circle,rgba(255,255,255,.45),transparent 62%);animation:haloPulse 2.6s ease-in-out infinite}
+@keyframes haloPulse{50%{transform:scale(1.12);opacity:.65}}
+.spark{position:absolute;z-index:3;width:26px;height:26px;pointer-events:none;animation:sparkSpin 11s linear infinite}
+.spark i{position:absolute;top:0;left:50%;width:100%;height:100%;transform-origin:center;margin:-13px 0 0 -13px}
+.spark i::before{content:"✦";color:#ffe9a8;font-size:20px;text-shadow:0 0 8px #ffd166}
+.spark.s1{inset:-13px}.spark.s2{inset:-13px;animation-duration:15s;animation-direction:reverse}
+.spark.s2 i::before{content:"❀";color:#ffc7dd;font-size:17px}
+.spark.s2 i:nth-child(1){transform:rotate(45deg) translateY(-160px)}
+@keyframes sparkSpin{to{transform:rotate(360deg)}}
+#seal{position:relative;z-index:2;border:0;cursor:pointer;width:100%;height:100%;border-radius:50%;
+background:radial-gradient(circle at 32% 26%,#ffffff,#ffeef5 58%,#ffd9e6);color:var(--rose);font:inherit;
+box-shadow:0 0 0 10px rgba(255,255,255,.4),0 0 0 12px rgba(217,164,65,.55),0 26px 60px rgba(0,0,0,.35),inset 0 -10px 24px rgba(233,69,122,.14);
+animation:pulse 2.4s ease-in-out infinite;transition:opacity .5s,transform .8s}
+#seal:hover{transform:scale(1.05)}
+#seal:active{transform:scale(.96)}
+#seal .flower{width:34%;margin:4% auto 0;display:block;animation:sway 4s ease-in-out infinite;transform-origin:50% 90%}
+#seal .script{font-size:clamp(1.25rem,5.6vw,1.75rem);display:block;line-height:1.15;margin-top:2px}
+#seal small{display:inline-block;margin-top:8px;color:#8a4a62;font-size:.85rem;font-style:italic;letter-spacing:.4px;position:relative;padding-bottom:2px}
+#seal small::after{content:"";position:absolute;left:10%;right:10%;bottom:-2px;height:2px;border-radius:2px;background:var(--rose);opacity:.7;animation:blinkLine 1.6s ease-in-out infinite}
+@keyframes blinkLine{50%{opacity:.15}}
+#cover.open .seal-wrap{opacity:0;transform:scale(2.2) rotate(6deg);transition:opacity .55s,transform .9s cubic-bezier(.77,0,.18,1)}
+@keyframes pulse{50%{transform:scale(1.045)}}
+@media (prefers-reduced-motion:reduce){*{animation:none!important;transition:none!important}}
 /* REVELADO */
 main{filter:blur(18px) saturate(.4);transform:scale(1.06);opacity:0;transition:filter 2.2s ease .5s,transform 2.2s ease .5s,opacity 1.6s ease .5s}
 main.show{filter:none;transform:none;opacity:1}
 section{max-width:760px;margin:0 auto;padding:44px 20px}
-.hero h1{font-size:clamp(2.2rem,8vw,3.8rem);margin:.2em 0}
+.hero h1{font-size:clamp(2.2rem,8vw,3.8rem);margin:.2em 0;text-shadow:0 2px 14px rgba(233,69,122,.25)}
+.hero .mini{letter-spacing:.6em;font-size:1.6rem!important;display:inline-block;animation:sway 5s ease-in-out infinite}
 .hero p{font-style:italic;font-size:1.15rem;max-width:520px;margin:0 auto}
+.hero::after{content:"";display:block;width:min(220px,50%);height:2px;margin:22px auto 0;border-radius:2px;background:linear-gradient(90deg,transparent,var(--rose),transparent)}
 .bouquets{display:flex;flex-wrap:wrap;justify-content:center;gap:10px}
 .bouquets svg{width:min(300px,46vw);height:auto;overflow:visible;cursor:pointer;transition:transform .4s}
 .bouquets svg:hover{transform:rotate(-3deg) scale(1.05)}
@@ -60,13 +103,35 @@ footer{padding:30px 10px 70px;font-size:.9rem;opacity:.75}
 
 <div id="cover">
   <div class="half l"></div><div class="half r"></div>
-  <button id="seal" aria-label="Abrir regalo"><b>💐</b><span class="script">Tengo algo<br>para ti</span><small>toca para abrir</small></button>
+  <div class="halves-orn"><i style="left:6%;top:8%"></i><i style="right:7%;bottom:10%"></i><i style="left:12%;bottom:16%;width:9vmin"></i><i style="right:13%;top:14%;width:9vmin"></i></div>
+  <div class="deco" id="coverDeco" aria-hidden="true"></div>
+  <div class="seal-wrap">
+    <div class="halo"></div>
+    <div class="ring"></div>
+    <div class="spark s1" aria-hidden="true"><i style="transform:rotate(0deg) translateY(-158px)"></i><i style="transform:rotate(120deg) translateY(-158px)"></i><i style="transform:rotate(240deg) translateY(-158px)"></i></div>
+    <div class="spark s2" aria-hidden="true"><i style="transform:rotate(60deg) translateY(-178px)"></i><i style="transform:rotate(180deg) translateY(-178px)"></i><i style="transform:rotate(300deg) translateY(-178px)"></i></div>
+    <button id="seal" aria-label="Abrir regalo">
+      <svg class="flower" viewBox="0 0 100 120" aria-hidden="true">
+        <path d="M50 118 Q47 88 50 70" stroke="#3e9b5a" stroke-width="5" fill="none" stroke-linecap="round"/>
+        <path d="M50 96 Q30 92 24 78 Q44 76 50 92Z" fill="#4aa864"/><path d="M50 88 Q70 84 76 70 Q56 68 50 84Z" fill="#3e9b5a"/>
+        <g transform="translate(50 46)">
+          <ellipse cx="0" cy="-24" rx="11" ry="20" fill="#ff7aa6"/><ellipse cx="0" cy="-24" rx="11" ry="20" fill="#f45b8d" transform="rotate(45)"/>
+          <ellipse cx="0" cy="-24" rx="11" ry="20" fill="#ff9fc0" transform="rotate(90)"/><ellipse cx="0" cy="-24" rx="11" ry="20" fill="#e9457a" transform="rotate(135)"/>
+          <ellipse cx="0" cy="-24" rx="11" ry="20" fill="#ff7aa6" transform="rotate(180)"/><ellipse cx="0" cy="-24" rx="11" ry="20" fill="#f45b8d" transform="rotate(225)"/>
+          <ellipse cx="0" cy="-24" rx="11" ry="20" fill="#ff9fc0" transform="rotate(270)"/><ellipse cx="0" cy="-24" rx="11" ry="20" fill="#e9457a" transform="rotate(315)"/>
+          <circle r="12" fill="#ffd166"/><circle r="6" fill="#e0a93a"/>
+        </g>
+      </svg>
+      <span class="script">Tengo algo<br>para ti</span>
+      <small>toca para abrir 💌</small>
+    </button>
+  </div>
 </div>
 <button id="mute" aria-label="Música">🎵</button>
 
 <main id="main">
   <section class="hero">
-    <div style="font-size:2rem">🌸 💄 🌷</div>
+    <div class="mini">🌸 💄 🌷</div>
     <h1 id="titulo">Para ti</h1>
     <p>Porque las flores se marchitan, pero un buen labial dura todo el día (y mi cariño, para siempre).</p>
   </section>
@@ -101,11 +166,45 @@ footer{padding:30px 10px 70px;font-size:.9rem;opacity:.75}
 
 <script>
 /* ====== EDITA AQUÍ ====== */
-var NOMBRE = "Mi amor";           // nombre que aparece en el título
+var NOMBRE = "Gisela";            // nombre que aparece en el título
 var FIRMA  = "— Con cariño";      // tu firma
 /* ========================= */
 document.getElementById("titulo").textContent = "Para ti, " + NOMBRE;
 document.getElementById("firma").textContent = FIRMA;
+
+/* ---- Portada: pétalos flotantes + confeti al abrir ---- */
+(function(){
+  var deco=document.getElementById("coverDeco");
+  if(!deco)return;
+  var emojis=["🌸","🌷","💮","✨","🌺","💐","🎀","💄"];
+  for(var i=0;i<16;i++){
+    var s=document.createElement("span");
+    s.textContent=emojis[i%emojis.length];
+    s.style.left=(4+Math.random()*92)+"vw";
+    s.style.top=(6+Math.random()*86)+"vh";
+    s.style.fontSize=(15+Math.random()*24)+"px";
+    s.style.animationDuration=(5+Math.random()*6)+"s";
+    s.style.animationDelay=(Math.random()*6)+"s";
+    deco.appendChild(s);
+  }
+})();
+function burst(x,y){
+  var chars=["💖","✨","🌸","💄","🎀","💐","⭐","🌷"];
+  for(var i=0;i<34;i++){
+    var p=document.createElement("span");
+    p.textContent=chars[Math.floor(Math.random()*chars.length)];
+    p.style.cssText="position:fixed;left:"+x+"px;top:"+y+"px;z-index:70;pointer-events:none;font-size:"+(14+Math.random()*20)+"px;transition:transform 1.1s cubic-bezier(.15,.6,.35,1),opacity 1.2s ease .3s";
+    document.body.appendChild(p);
+    (function(el){
+      requestAnimationFrame(function(){
+        var a=Math.random()*6.283,d=90+Math.random()*220;
+        el.style.transform="translate("+Math.cos(a)*d+"px,"+(Math.sin(a)*d-60)+"px) rotate("+(Math.random()*720-360)+"deg) scale(.4)";
+        el.style.opacity="0";
+        setTimeout(function(){el.remove()},1500);
+      });
+    })(p);
+  }
+}
 
 var NS="http://www.w3.org/2000/svg";
 function bouquet(pal){
@@ -269,7 +368,8 @@ function rain(list,n){
     document.body.appendChild(e);setTimeout(function(x){x.remove()},11000,e);
   }
 }
-document.getElementById("seal").addEventListener("click",function(){
+document.getElementById("seal").addEventListener("click",function(ev){
+  burst(ev.clientX||innerWidth/2,ev.clientY||innerHeight/2);
   try{song.currentTime=0;song.volume=0;var p=song.play();if(p&&p.catch)p.catch(function(){});
     var v=0,t=setInterval(function(){v=Math.min(1,v+.04);song.volume=v;if(v>=1)clearInterval(t)},120);}catch(e){}
   cover.classList.add("open");
